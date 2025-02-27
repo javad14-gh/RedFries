@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>درخواست خرید</title>
+</head>
+<body>
+<h2>فرم درخواست خرید</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <h3>محصولات مورد نیاز:</h3>
+    {% for product in form.products.field.queryset %}
+        <div>
+            <label>
+                <input type="checkbox" name="products" value="{{ product.id }}" class="product-checkbox">
+                {{ product.name }}
+            </label>
+            <input type="number" name="quantity_{{ product.id }}" class="quantity-field" placeholder="تعداد موجودی" style="display:none;">
+        </div>
+    {% endfor %}
+
+    <button type="submit">ارسال</button>
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".product-checkbox").forEach(function(checkbox) {
+        checkbox.addEventListener("change", function() {
+            let quantityField = this.closest("div").querySelector(".quantity-field");
+            quantityField.style.display = this.checked ? "inline-block" : "none";
+        });
+    });
+});
+</script>
+</body>
+</html>
